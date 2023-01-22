@@ -1,0 +1,7 @@
+Set-Alias cc OutputMachineInfo
+
+Function OutputMachineInfo() {
+	$t =  "aaaa`n"
+	$t += "bbbb"
+ 	Write-Host $t
+}

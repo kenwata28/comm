@@ -1,0 +1,11 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "alt+oem_plus",
+        "command": "editor.action.insertSnippet",
+        "when": "editorTextFocus",
+        "args": {
+            "snippet": "$CURRENT_HOUR$CURRENT_MINUTE  "
+        }
+    }
+]
