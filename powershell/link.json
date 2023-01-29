@@ -1,5 +1,5 @@
 {
-    "link" : [
+    "links" : [
         {
             "id": 0,
             "link": "c:/users/kenwa",
@@ -8,9 +8,7 @@
         {
             "id": 1,
             "link": "c:/users/kenwa/work",
-            "description": "work"
+            "description": "aaa"
         }
     ]
-
-
 }
