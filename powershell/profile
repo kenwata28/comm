@@ -1,5 +1,8 @@
 Set-Alias cc OutputMachineInfo
 
+Set-PSReadlineOption -EditMode Emacs
+
+
 Function OutputMachineInfo() {
 	$t =  "aaaa`n"
 	$t += "bbbb"
