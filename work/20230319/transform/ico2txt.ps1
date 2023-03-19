@@ -7,12 +7,11 @@
 # Set-Content -Path "output.txt" -Value $text
 # icoファイルをバイト配列として読み込み、それをBase64エンコードしてテキストファイルに書き込む
 
-$filename = "./nekos_ico/" + $args[0] + ".ico"
-Write-Host($filename)
-$bytes = [System.IO.File]::ReadAllBytes($filename)
-
+# $filename = "./nekos_ico/" + $args[0] + ".ico"
+# Write-Host($filename)
+#$bytes = [System.IO.File]::ReadAllBytes($filename)
 $txtname = "./txt/" + $args[0] + ".txt"
-[System.IO.File]::WriteAllText($txtname, [System.Convert]::ToBase64String($bytes))
+#[System.IO.File]::WriteAllText($txtname, [System.Convert]::ToBase64String($bytes))
 
 $text = [System.IO.File]::ReadAllText($txtname)
 $bytes = [System.Convert]::FromBase64String($text)
