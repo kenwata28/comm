@@ -1,0 +1,63 @@
+{
+    "window.zoomLevel": 2,
+    "C_Cpp.clang_format_style": "Google",
+    "editor.formatOnSave": true,
+    "workbench.editor.untitled.hint": "hidden",
+    // ----------------------------
+    // 
+    //   markdown 用の設定
+    // 
+    // ----------------------------
+    // 最大3000msまでレンダリングの処理を待つ
+    // latex 数式用
+    "markdown-preview-enhanced.puppeteerWaitForTimeout": 3000,
+    // puppetteer で chrome print する際に背景をつける。
+    // これがないと pdf にうまく色がつかない。
+    "markdown-preview-enhanced.printBackground": true,
+    // markdown 用の syntax
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            { // *hoge* 
+                "scope": "markup.italic",
+                "settings": {
+                    "foreground": "#b3ab20",
+                    "fontStyle": "italic"
+                },
+            },
+            { // **hoge** 
+                "scope": "markup.bold",
+                "settings": {
+                    "foreground": "#b32071",
+                    //"foreground": "#b32027",
+                    "fontStyle": "bold"
+                },
+            },
+            { // ***hoge***
+                "scope": [
+                    "markup.bold markup.italic.markdown"
+                ],
+                "settings": { // not work good...
+                    //"foreground": "#389674",
+                },
+            },
+            { // $hoge$
+                "scope": [
+                    "punctuation.definition.math.end.markdown",
+                    "punctuation.definition.math.begin.markdown",
+                    "meta.embedded.math.markdown"
+                ],
+                "settings": {
+                    "foreground": "#389674",
+                },
+            },
+            { // #h1
+                "scope": "heading.1.markdown entity.name.section.markdown",
+                "settings": {
+                    "foreground": "#4d85c3",
+                }
+            }
+        ]
+    },
+    "git.openRepositoryInParentFolders": "never",
+    "markdown-preview-enhanced.previewTheme": "github-light.css",
+}

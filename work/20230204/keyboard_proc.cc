@@ -1,7 +1,5 @@
 #include <Windows.h>
-
 #include <iostream>
-
 #include "log_key_input.h"
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
