@@ -1,0 +1,228 @@
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+.markdown-preview.markdown-preview {
+  // modify your style here
+  // eg: background-color: blue;
+
+  // 線などの色
+  @line-color: #2f51b4;
+  @section-color: #20b2aa;
+  // 表のヘッダーの色
+  @table-header-color: rgb(121, 190, 255);
+
+  /* 色装飾関係のCSS */
+  .colors() {
+    .red {
+      color: red;
+    }
+
+    .blue {
+      color: blue;
+    }
+
+    .green {
+      color: green;
+    }
+
+    .yellow {
+      color: yellow;
+    }
+  }
+
+  .hackgen {
+    font-family: 'HackGen', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  .hackgenNerd {
+    font-family: 'HackGenNerd', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  .applyCodeBlockFont(@font: "HackGenNerd") {
+    pre[data-role=codeBlock] {
+      font-family: @font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+  }
+
+  .basic() {
+    background-color: white;
+    color: black;
+  }
+
+  /**
+* メイン部分
+*/
+  .main() {
+    body {
+      .basic();
+    }
+
+    // この辺はmarkdown-pdfのstylesフォルダから抜粋。
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-weight: normal;
+      color: @section-color;
+    }
+
+    h1 {
+      padding-bottom: 0.2em;
+      line-height: 1.2;
+      border-color: @section-color;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+    }
+
+    h2 {
+      position: relative;
+      padding-left: 18px;
+      padding-right: 18px;
+      padding-bottom: 0.1em;
+      line-height: 1.2;
+      display: inline-block;
+
+      &::before {
+        background: @section-color;
+        content: "";
+        bottom: -0.05em;
+        width: 5px;
+        left: 0px;
+        position: absolute;
+        top: 3px;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0%;
+        width: 100%;
+        bottom: -1px;
+        border-bottom: solid 1px @section-color;
+      }
+
+    }
+
+    h3 {
+      color: @section-color;
+      padding-left: 5px;
+      padding-right: 13px;
+      display: inline-block;
+      border-bottom: solid 1px @section-color;
+    }
+
+    h4 {
+      color: @section-color;
+      position: relative;
+      padding-left: 5px;
+      padding-right: 10px;
+      display: inline-block;
+      border-bottom: solid 1px @section-color;
+    }
+
+    h5 {
+      color: @section-color;
+      position: relative;
+      padding-left: 5px;
+      padding-right: 10px;
+      display: inline-block;
+      border-bottom: solid 1px @section-color;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    hr {
+      border: 0;
+      height: 2px;
+      border-bottom: 2px solid;
+    }
+
+    em {
+      color: #b3ab20;
+    }
+
+    strong {
+      color: #b32071;
+    }
+
+    em>strong {
+      color: #b32027;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .italic {
+      font-style: italic;
+    }
+
+    table {
+      width: 95%;
+      margin: auto;
+      border-collapse: collapse;
+
+      tr {
+        th {
+          background-color: @table-header-color;
+        }
+
+        th,
+        td {
+          border: solid 1px black;
+          text-align: center
+        }
+      }
+    }
+
+    em img {
+      max-width: 48%;
+    }
+
+    strong img {
+      max-width: 30%;
+    }
+
+    em>strong>img {
+      max-width: 23%;
+    }
+
+
+
+    .applyCodeBlockFont();
+
+    .colors;
+
+    .right {
+      text-align: right
+    }
+
+    .center {
+      text-align: center
+    }
+
+    .left {
+      text-align: left
+    }
+
+  }
+
+  /* bodyとmarkdown-preview.markdown-previewに適用して、previewとpdfのCSSを共通にする */
+  .main;
+
+  .markdown-preview.markdown-preview {
+    .main;
+    .basic();
+
+    @media print {
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+
+}
