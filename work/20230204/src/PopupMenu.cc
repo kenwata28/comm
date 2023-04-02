@@ -22,6 +22,7 @@ void popup_menu::Open(HWND hwnd, LPARAM lpar) {
 
 #include <fstream>
 void OutputStatData() {
+  // 統計情報を stat.dat に書き出す.
   auto inst = key_type_counting::CountData::GetInstance();
   auto vect = inst->AllStructTypingData();
   std::ofstream ofs("stat.dat");
@@ -33,6 +34,9 @@ void OutputStatData() {
     ofs << t;
   }
   ofs.close();
+
+  // gunplot を起動。
+  system("gnuplot .\\mk_graph\\test.plt");
 }
 
 void Disp(HWND hwnd) {
