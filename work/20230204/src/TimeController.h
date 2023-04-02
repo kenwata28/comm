@@ -1,24 +1,9 @@
-#include "IconDisplayer.h"
-#include <windows.h>
+#ifndef TIME_CONTROLLER_H_
+#define TIME_CONTROLLER_H_
+
 #include <time.h>
-class ThreadData
-{
-public:
-    ThreadData() : idis{nullptr}, interval{100} {}
+#include <windows.h>
 
-    IconDisplayer *idis;
-    int interval;
+#include "ThreadData.h"
 
-private:
-};
-
-DWORD WINAPI DisplayRunning(LPVOID input_data)
-{
-    auto data = static_cast<ThreadData *>(input_data);
-
-    while (true)
-    {
-        data->idis->Notify();
-        Sleep(data->interval); // change event by event
-    }
-}
+#endif  // TIME_CONTROLLER_H_

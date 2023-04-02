@@ -18,16 +18,11 @@ $(TARGET): $(OBJS) $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc
 	powershell -Command "if (-not (TEST-PATH $(OBJ_DIR))) { mkdir $(OBJ_DIR) }"
+	powershell -Command "if (-not (TEST-PATH level)) { mkdir level }"
 	g++ -D UNICODE -D _UNICODE -I$(INC_DIR) -c $< -o $@ 
 
 all: clean $(TARGET)
 
 clean:
-	powershell -Command "rm -R $(TARGET).exe"
-	powershell -Command "rm -R $(OBJS)"
-
-#
-#
-
-
-
+	powershell -Command "if (TEST-PATH $(TARGET).exe) { rm -R $(TARGET).exe }"
+	powershell -Command "rm -R $(OBJ_DIR)/*"

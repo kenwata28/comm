@@ -1,48 +1,18 @@
-#ifndef LOG_KEY_INPUT__
-#define LOG_KEY_INPUT__
+#include "KeyInputLogger.h"
 
-#include <Windows.h>
-
-#include <iostream>
-
-namespace log_key_input {
-
-class StatusOfModifier {
- public:
-  StatusOfModifier()
-      : pressed_ctrl(false),
-        pressed_alt(false),
-        pressed_shift(false),
-        pressed_win(false),
-        pressed_ctrl_with_key(false),
-        pressed_alt_with_key(false),
-        pressed_shift_with_key(false),
-        pressed_win_with_key(false) {}
-
-  bool pressed_ctrl;
-  bool pressed_alt;
-  bool pressed_shift;
-  bool pressed_win;
-
-  // This is for the case of only modifier key input
-  bool pressed_ctrl_with_key;
-  bool pressed_alt_with_key;
-  bool pressed_shift_with_key;
-  bool pressed_win_with_key;
-};
-
+#include "KeyNames.h"
 // Return string of shortcut based on key and status of
 // modifier(StatusOfModifier) e.g.
 // - Ctrl + v
 // - Alt + space
 // - Win + Shift + space
-std::string StringOfKeyAppendedModifiers(const StatusOfModifier &st,
-                                         const DWORD key) {
+std::string KeyInputLogger::StringOfKeyAppendedModifiers(
+    const StatusOfModifier& st, const DWORD key) const {
   std::string ans;
-  if (st.pressed_alt) ans += "Alt + ";
-  if (st.pressed_win) ans += "Win + ";
-  if (st.pressed_ctrl) ans += "Ctrl + ";
-  if (st.pressed_shift) ans += "Shift + ";
+  if (st.pressed[kAlt]) ans += "Alt + ";
+  if (st.pressed[kWin]) ans += "Win + ";
+  if (st.pressed[kCtrl]) ans += "Ctrl + ";
+  if (st.pressed[kShift]) ans += "Shift + ";
   ans += g_str_key[int(key)];
   return ans;
 }
@@ -84,48 +54,44 @@ std::string StringOfKeyAppendedModifiers(const StatusOfModifier &st,
 // とか、修飾キーのみを組み合わせるだけのキー入力には対応していない。
 // 使わないとおもうので、無視。
 //
-void LogKeyInput(const WPARAM w_par, const DWORD key) {
-  static StatusOfModifier st;
+void KeyInputLogger::LogKeyInput(const WPARAM w_par, const DWORD key) {
   // Case of key down and key up
   if (w_par == WM_KEYDOWN || w_par == WM_SYSKEYDOWN) {
     // key down
-    if (key == VK_CONTROL) {  // Control
-      st.pressed_ctrl = true;
-      st.pressed_ctrl_with_key = false;
-    } else if (key == VK_MENU) {  // Alt
-      st.pressed_alt = true;
-      st.pressed_alt_with_key = false;
-    } else if (key == VK_SHIFT) {  // Shift
-      st.pressed_shift = true;
-      st.pressed_shift_with_key = false;
+    if (key == VK_LCONTROL or key == VK_RCONTROL) {  // Control
+      st_.pressed[kCtrl] = true;
+      st_.pressed_with_key[kCtrl] = false;
+    } else if (key == VK_LMENU or key == VK_RMENU) {  // Alt
+      st_.pressed[kAlt] = true;
+      st_.pressed_with_key[kAlt] = false;
+    } else if (key == VK_LSHIFT or key == VK_RSHIFT) {  // Shift
+      st_.pressed[kShift] = true;
+      st_.pressed_with_key[kShift] = false;
     } else if (key == VK_LWIN or key == VK_RWIN) {  // Windows key
-      st.pressed_win = true;
-      st.pressed_win_with_key = false;
+      st_.pressed[kWin] = true;
+      st_.pressed_with_key[kWin] = false;
     } else {
-      st.pressed_ctrl_with_key = true;
-      st.pressed_alt_with_key = true;
-      st.pressed_shift_with_key = true;
-      st.pressed_win_with_key = true;
-      std::string str = StringOfKeyAppendedModifiers(st, key);
-      std::cout << str << std::endl;
+      std::string str = StringOfKeyAppendedModifiers(st_, key);
+      flog_.AppendWithTime(str.c_str());
+      // char txt[256];
+      // sprintf(txt, "key: 0x%x, int(%d)", key, int(key));
+      // flog_.Append(txt);
+      for (auto& p : st_.pressed_with_key) p = true;
     }
   } else {  // when (w_par == WM_KEYUP || w_par == WM_SYSKEYUP)
     // Key up
-    if (key == VK_CONTROL) {
-      st.pressed_ctrl = false;
-      if (not st.pressed_ctrl_with_key) std::cout << "Only Ctrl" << std::endl;
-    } else if (key == VK_MENU) {
-      st.pressed_alt = false;
-      if (not st.pressed_alt_with_key) std::cout << "Only Alt" << std::endl;
-    } else if (key == VK_SHIFT) {
-      st.pressed_shift = false;
-      if (not st.pressed_shift_with_key) std::cout << "Only Shift" << std::endl;
+    if (key == VK_LCONTROL or key == VK_RCONTROL) {
+      st_.pressed[kCtrl] = false;
+      if (not st_.pressed_with_key[kCtrl]) flog_.AppendWithTime("Ctrl");
+    } else if (key == VK_LMENU or key == VK_RMENU) {
+      st_.pressed[kAlt] = false;
+      if (not st_.pressed_with_key[kAlt]) flog_.AppendWithTime("Alt");
+    } else if (key == VK_LSHIFT or key == VK_RSHIFT) {  // Shift
+      st_.pressed[kShift] = false;
+      if (not st_.pressed_with_key[kShift]) flog_.AppendWithTime("Shift");
     } else if (key == VK_LWIN or key == VK_RWIN) {
-      st.pressed_win = false;
-      if (not st.pressed_win_with_key) std::cout << "Only Win" << std::endl;
+      st_.pressed[kWin] = false;
+      if (not st_.pressed_with_key[kWin]) flog_.AppendWithTime("Win");
     }
   }
 }
-}  // namespace log_key_input
-
-#endif  // LOG_KEY_INPUT__
