@@ -6,7 +6,7 @@
 
 namespace popup_menu {
 
-enum { ID_EXIT = 1000, ID_CLOSE };
+enum { ID_EXIT = 1000, ID_CLOSE, ID_OUTPUT_STAT, ID_DISP };
 void Open(HWND hwnd, LPARAM lpar);
 void RightButtonAction(HWND hwnd);
 void LeftButtonAction(HWND hwnd);

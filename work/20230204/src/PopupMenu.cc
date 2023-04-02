@@ -20,28 +20,19 @@ void popup_menu::Open(HWND hwnd, LPARAM lpar) {
 // void popup_menu::Cmd(HWND hwnd, WPARAM wpar) {
 // }
 
-void popup_menu::RightButtonAction(HWND hwnd) {
-  HMENU hpm = ::CreatePopupMenu();
-  AppendMenu(hpm, MF_STRING, ID_CLOSE, TEXT("Close"));
-  AppendMenu(hpm, MF_STRING, ID_EXIT, TEXT("Quit"));
-  POINT pt;
-  ::GetCursorPos(&pt);
-  SetForegroundWindow(hwnd);  // ほかの場所クリックやescで popup を閉じるため.
-  int cmd = ::TrackPopupMenu(hpm, TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y,
-                             0, hwnd, NULL);
-
-  switch (cmd) {
-    case (ID_CLOSE):
-      ::PostMessage(hwnd, WM_CLOSE, 0, 0);
-      break;
-    case (ID_EXIT):
-      ::SendMessage(hwnd, WM_CANCELMODE, 0, 0);
-      break;
-    default:
-      break;
+#include <fstream>
+void OutputStatData() {
+  auto inst = key_type_counting::CountData::GetInstance();
+  auto vect = inst->AllStructTypingData();
+  std::ofstream ofs("stat.dat");
+  ofs << "#key   vk#   total_count   miss_count   miss_rate" << std::endl;
+  for (const auto& st : vect) {
+    char t[256];
+    sprintf(t, "%s  %x  %lld  %lld  %lf\n", g_str_key[st.vkey].c_str(), st.vkey,
+            st.total_count, st.miss_count, st.miss_rate);
+    ofs << t;
   }
-
-  ::DestroyMenu(hpm);
+  ofs.close();
 }
 
 void Disp(HWND hwnd) {
@@ -63,9 +54,9 @@ void Disp(HWND hwnd) {
     sprintf(txt[i], "%s", g_str_key[key].c_str());
   }
   char t[1024];
-  sprintf(t, "The keys with the most mistakes are\n%s, %s and %s", txt[0],
-          txt[1], txt[2]);
-  MessageBoxA(hwnd, t, "miss", MB_ICONINFORMATION);
+  sprintf(t, "You are likely to make mistakes with the keys \n%s, %s and %s",
+          txt[0], txt[1], txt[2]);
+  MessageBoxA(hwnd, t, "Display", MB_ICONINFORMATION);
 }
 
 void popup_menu::LeftButtonAction(HWND hwnd) {
@@ -73,6 +64,41 @@ void popup_menu::LeftButtonAction(HWND hwnd) {
   ::GetCursorPos(&pt);
 
   Disp(hwnd);
+}
+
+void popup_menu::RightButtonAction(HWND hwnd) {
+  HMENU hpm = ::CreatePopupMenu();
+  AppendMenu(hpm, MF_STRING, ID_OUTPUT_STAT, TEXT("統計情報を出力(&S)"));
+  AppendMenu(hpm, MF_STRING, ID_DISP,
+             TEXT("ミスタイプしやすいKEYを教えて(&T)"));
+  AppendMenu(hpm, MF_SEPARATOR, 0, NULL);
+  AppendMenu(hpm, MF_STRING, ID_CLOSE, TEXT("閉じる(&Q)"));
+  AppendMenu(hpm, MF_SEPARATOR, 0, NULL);
+  AppendMenu(hpm, MF_STRING, ID_EXIT, TEXT("トレイを閉じる。"));
+  POINT pt;
+  ::GetCursorPos(&pt);
+  SetForegroundWindow(hwnd);  // ほかの場所クリックやescで popup を閉じるため.
+  int cmd = ::TrackPopupMenu(hpm, TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y,
+                             0, hwnd, NULL);
+
+  switch (cmd) {
+    case (ID_CLOSE):
+      ::PostMessage(hwnd, WM_CLOSE, 0, 0);
+      break;
+    case (ID_EXIT):
+      ::SendMessage(hwnd, WM_CANCELMODE, 0, 0);
+      break;
+    case (ID_OUTPUT_STAT):
+      OutputStatData();
+      break;
+    case (ID_DISP):
+      Disp(hwnd);
+      break;
+    default:
+      break;
+  }
+
+  ::DestroyMenu(hpm);
 }
 
 // HWND CreateEdit(HWND hwndOwner,   // Dialog box handle.
