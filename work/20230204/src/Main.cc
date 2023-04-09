@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "Global.h"
+#include "FileLogger.h"
+#include "IconDisplayer.h"
 #include "InputKeysData.h"
-#include "KeyInputLogger.h"
 #include "MemoryMappedFile.h"
 #include "PopupMenu.h"
-#include "TimerForPacedown.h"
+#include "TimeController.h"
 
 namespace {
 HHOOK g_hook;
@@ -16,10 +16,6 @@ HINSTANCE hinst;
 HWND g_hwnd;
 ThreadData shared_data;
 InputKeysDatas g_type_data_buffer;
-KeyInputLogger g_input_key_log;
-FileLogger g_level_logger;
-// key_type_counting::CountData* g_counter = nullptr;
-//  typing_counter::DataBuf g_typing_counter;
 }  // namespace
 
 LRESULT _stdcall KeyboardInputProc(int code, WPARAM w_par, LPARAM l_par);
@@ -69,9 +65,6 @@ void Create(HWND hwnd) {
 
   ::thread = ::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)DisplayRunning,
                             (LPVOID)(&::shared_data), 0, NULL);
-
-  ::g_input_key_log = KeyInputLogger();
-  ::g_level_logger = FileLogger("level");
 
   // set timer
   ::SetTimer(hwnd, ID_TIMER_2sec, 2 * 1000, NULL);
@@ -126,8 +119,10 @@ int FuncEach30s(int level) {
 
   // LoggerData
   char line[FileLogger::kMaxSizeOfLine];
-  sprintf(line, "%d", level);
-  g_level_logger.AppendWithTime(line);
+  std::snprintf(line, sizeof(line), "%d", level);
+
+  auto ptr = FileLogger::GetInstance();
+  ptr->AppendWithTime(line);
 
   return 0;
 }
@@ -202,9 +197,9 @@ LRESULT _stdcall KeyboardInputProc(int code, WPARAM w_par, LPARAM l_par) {
   const DWORD key = hook->vkCode;
 
   if (code >= 0) {
-    if (KeyDownOrUp(w_par)) {
-      g_input_key_log.LogKeyInput(w_par, key);
-    }
+    // if (KeyDownOrUp(w_par)) {
+    //   g_input_key_log.LogKeyInput(w_par, key);
+    // }
     if (w_par == WM_KEYDOWN) {
       auto inst = key_type_counting::CountData::GetInstance();
       inst->CountUpTotal(key);

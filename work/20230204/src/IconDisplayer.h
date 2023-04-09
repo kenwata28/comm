@@ -47,7 +47,7 @@ inline std::vector<std::wstring> IconDisplayer::LoadIcoFileNames(
 inline BOOL IconDisplayer::Close() {
   Shell_NotifyIcon(NIM_DELETE, &data_);
   for (auto& icon : icons_) {
-    DestroyIcon(icon);
+    ::DestroyIcon(icon);
   }
   return TRUE;
 }

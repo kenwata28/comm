@@ -1,10 +1,13 @@
-#ifndef FILE_LOGGER_H_
-#define FILE_LOGGER_H_
+// #ifndef FILE_LOGGER_H_
+// #define FILE_LOGGER_H_
+#pragma once
 
 #include <windows.h>
 
 #include <cstdio>
 #include <ctime>
+#include <string>
+
 class FileLogger {
  public:
   enum {
@@ -13,17 +16,21 @@ class FileLogger {
   };
 
  public:
-  FileLogger() {}
-  FileLogger(const char* dirname) { SetFileName(dirname); }
+  static FileLogger* GetInstance();
 
+  // ファイルにtxtを追記する.
   void Append(const char* txt);
+
+  // ファイルに時刻とともにtxtを追記する。
   void AppendWithTime(const char* txt);
 
  private:
   void SetFileName(const char* dirname);
 
  private:
-  char filename_[kMaxSizeOfFilePath];
+  FileLogger() {}
+  static FileLogger* g_file_logger;
+  std::string filename_;
 };
 
-#endif  // FILE_LOGGER_H_
+// #endif  // FILE_LOGGER_H_

@@ -58,8 +58,9 @@ void Disp(HWND hwnd) {
     sprintf(txt[i], "%s", g_str_key[key].c_str());
   }
   char t[1024];
-  sprintf(t, "You are likely to make mistakes with the keys \n%s, %s and %s",
-          txt[0], txt[1], txt[2]);
+  snprintf(t, sizeof(t),
+           "You are likely to make mistakes with the keys \n%s, %s and %s",
+           txt[0], txt[1], txt[2]);
   MessageBoxA(hwnd, t, "Display", MB_ICONINFORMATION);
 }
 
@@ -81,7 +82,7 @@ void popup_menu::RightButtonAction(HWND hwnd) {
   AppendMenu(hpm, MF_STRING, ID_EXIT, TEXT("トレイを閉じる。"));
   POINT pt;
   ::GetCursorPos(&pt);
-  SetForegroundWindow(hwnd);  // ほかの場所クリックやescで popup を閉じるため.
+  ::SetForegroundWindow(hwnd);  // ほかの場所クリックやescで popup を閉じるため.
   int cmd = ::TrackPopupMenu(hpm, TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y,
                              0, hwnd, NULL);
 
@@ -104,27 +105,3 @@ void popup_menu::RightButtonAction(HWND hwnd) {
 
   ::DestroyMenu(hpm);
 }
-
-// HWND CreateEdit(HWND hwndOwner,   // Dialog box handle.
-//                 int x, int y,     // Location.
-//                 HINSTANCE hinst)  // Application or DLL instance.
-// {
-//   // DialogBox(hinst, L"", hwndOwner, (DLGPROC)DialogProc);
-//   HWND hwndEdit = CreateWindowEx(
-//       0, TEXT("EDIT"), TEXT("Type here"),
-//       // ES_MULTILINE | WS_VISIBLE | WS_CHILD | WS_BORDER |
-//       // WS_TABSTOP, x, y, ES_MULTILINE | WS_VISIBLE | WS_BORDER
-//       ES_MULTILINE | WS_VISIBLE | WS_DLGFRAME | WS_CAPTION | WS_SYSMENU, x,
-//       y, 200, 100, hwndOwner, NULL, hinst, NULL);
-//   return hwndEdit;
-// }
-
-// LRESULT CALLBACK DialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
-// lParam) {
-//   switch (msg) {
-//     case WM_CLOSE:
-//       ::EndDialog(hWnd, IDOK);
-//       return TRUE;
-//   }
-//   return FALSE;
-// }
