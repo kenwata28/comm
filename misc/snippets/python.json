@@ -1,13 +1,13 @@
 "init": {
     "prefix": "init",
     "body": [
-        "# -*- coding: uft-8 -*-",
+        "# -*- coding: utf-8 -*-",
         "",
-        "def main() : ",
+        "def main() :",
         "	print('start')",
         "",
         "",
-        "if __nama__ == '__main__'",
+        "if __name__ == '__main__' :",
         "	main()"
     ],
     "description": "template for python"
