@@ -1,0 +1,14 @@
+"init": {
+    "prefix": "init",
+    "body": [
+        "# -*- coding: uft-8 -*-",
+        "",
+        "def main() : ",
+        "	print('start')",
+        "",
+        "",
+        "if __nama__ == '__main__'",
+        "	main()"
+    ],
+    "description": "template for python"
+}

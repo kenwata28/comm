@@ -1,4 +1,4 @@
-# -*- coding: shift_jis -*-
+# -*- coding: utf-8 -*-
 import subprocess
 import time
 from datetime import datetime 
@@ -6,9 +6,6 @@ import re
 import os
 
 import sys
-
-
-#script = " C:\\Users\\kenwa\\work\\comm\\powershell\\reminder\\test.ps1"    
 
 
 def main() : 
