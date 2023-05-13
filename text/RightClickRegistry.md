@@ -29,4 +29,12 @@ HKCU/Software/Classes/*いろいろ*/shell をいじる。
 `コンピューター\HKEY_CLASSES_ROOT\AllFilesystemObjects\shell\regist_test\command`
 `"C:\Users\kenwa\AppData\Local\Microsoft\WindowsApps\python.exe" "C:\Users\kenwa\work\comm\work\20230502\test.py" "%V"`
 
-ちなみに pythonw だと python の window を開かねぇ。
+ちなみに window を開かない方法 : 
+- pythonw.exe 
+- powershell だと powershell.exe -WindowStyle Hidden 
+
+#### 右クリックメニューのショートカット
+command ではなく、その親キーの 値のデータ(V) を
+regist_data(&r) とか regist_data(&1) 
+とかにすると、右クリックでそこに飛ぶ。
+

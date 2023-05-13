@@ -21,8 +21,8 @@ def main() :
     #time = mins * 60
     wait = mins
     
-    #cmd = f'powershell -WindowStyle Hidden {script} "Reminder" "{contents}" {wait}'
-    cmd = f'powershell {script} "Reminder" "{contents}" {wait}'
+    cmd = f'powershell -WindowStyle Hidden {script} "Reminder" "{contents}" {wait}'
+    #cmd = f'powershell {script} "Reminder" "{contents}" {wait}'
     proc = subprocess.Popen(cmd.split())
 
 
